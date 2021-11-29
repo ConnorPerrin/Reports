@@ -12,9 +12,8 @@ Like the example just given, in order for us to know the temperate of the room, 
 
 `Michel van Biezen` has a very nice definition to the [Kalman Filter](https://www.youtube.com/watch?v=CaCcOwJPytQ).
 
-```wrap
-It is an iterative Mathemtical process that uses a set of equation and consectuive data inputs to quickly estimate the true value (position, velocity, etc) of the object being measured, when the measure values containn unpredicted or random error (uncertiany or variations)
-```
+> It is an iterative Mathemtical process that uses a set of equation and consectuive data inputs to quickly estimate the true value (position, velocity, etc) of the object being measured, when the measure values containn unpredicted or random error (uncertiany or variations)
+
 
 ## Some examples:
 

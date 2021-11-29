@@ -31,7 +31,7 @@ To gain a good estimate of the `true` temperature of the room we have two option
 
 Now I know what you're saying, "Why not just use the first option? It's simple right?". Well Kalman Filter have a big advantage... speed. To gain an accurate estimation using averages, you might have to wait for 50+ samples, however Kalman Filters can quickly reach accuracte estimations with far fewer samples.
 
-![](https://assets.leetcode.com/uploads/2020/10/02/addtwonumber1.jpg)
+![](https://github.com/ConnorPerrin/Reports/blob/main/KalmanFilter/images/temperatureExample.png)
 
 
 

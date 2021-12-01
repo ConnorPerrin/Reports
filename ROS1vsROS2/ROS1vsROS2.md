@@ -35,7 +35,8 @@ Advantages:
 - Cooperation between developers
   
 Examples:
-1. Creating nodes in C++ for ROS1 vs ROS2
+
+Creating nodes in C++ for ROS1 vs ROS2
 
 ROS1
 ```
@@ -95,8 +96,21 @@ Key changes explained:
 "Instead of passing the node’s name to the library initialization call, we do the initialization, then pass the node name to the creation of the node object" - [Ros.org](https://docs.ros.org/en/foxy/Contributing/Migration-Guide.html)
 
 
+###  Lifecycled nodes
 
-2. Subscribers 
+Currently I do not have a great understanding of how exactly the `lifecycle` of nodes is used. As a result, I have included a quote from [Roboticsbackend](https://roboticsbackend.com/ros1-vs-ros2-practical-overview/).
+
+> ROS2 introduces the concept of lifecycled nodes. A lifecycled node has different states: unconfigured, inactive, active, finalized. This is very useful when you need a setup phase before actually running your node’s main functionalities. 
+> 
+> When you start such a node it is initially unconfigured. Through the provided interface (ROS2 services), you can ask for a transition to another state. When you do that a predefined callback will be triggered inside the node.
+>
+>Let’s say you have a node for a sensor. You first need to make sure the sensor is detected, and the communication has been successfully started. Then you can start your reading loop and publish the data.
+>
+> With a lifecycled node you can clearly separate this: first you allocate memory for publishers, subscribers, and other instantiated objects. Then, you initiate the communication with the sensor. And finally you run your reading loop to publish the data.
+
+[Roboticsbackend](https://roboticsbackend.com/ros1-vs-ros2-practical-overview/)
+
+## Subscribers 
 
 I've skipped over Publishers as they are virtually identical to ROS1 publishers with a few minor changes (As the node is now a smart pointer). However, `Subscribers` are a bit more complicated. 
 
@@ -153,6 +167,37 @@ int main(int argc, char *argv[]) {
 ```
 
 I have omitted the the above examples in Python as I personally believe if you can understand the above C++ code then understanding the changes in Python is a lot easier. But for your reference, here are some links to creating `Nodes` and `Subscribes` in Python: [Creating nodes in Python](https://roboticsbackend.com/write-minimal-ros2-python-node/), [Creating subscriber in Python](https://docs.ros.org/en/foxy/Tutorials/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
+
+## Launch Files
+
+In ROS1, all launch files are written in XML format. However, in ROS2 it is `suggested` that you write launch files using Python. Whilst writing launch files in Python is not exactly new to ROS2 (as it did already exist in ROS1), it was not really documented anywhere. As a result, writing launch files in XML became the norm. 
+
+
+```
+from launch import LaunchDescription
+from launch_ros.actions import Node
+def generate_launch_description():
+    ld = LaunchDescription()
+    talker_node = Node(
+        package="demo_nodes_cpp",
+        executable="talker",
+    )
+    listener_node = Node(
+        package="demo_nodes_py",
+        executable="listener"
+    )
+    ld.add_action(talker_node)
+    ld.add_action(listener_node)
+    return ld
+```
+
+NOTE: There is no need for this function to be directly called from within the file (i.e no main method). This is because `ros2 launch` will no to search for a method called `generate_launch_description` and to call it.
+NOTE: It is important that the function is called `generate_launch_description()`.
+
+Not a big fan of writing launch files in Python? Don't worry, you can still write them using XML, it's just suggested that for "more modularity, is more documented, and has become the ROS2 convention for launch files" - [Roboticsbackend](https://roboticsbackend.com/ros1-vs-ros2-practical-overview/)
+
+
+
 
 ## Sources
 
